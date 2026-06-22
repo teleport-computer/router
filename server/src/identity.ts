@@ -1,0 +1,119 @@
+/**
+ * Hermes Identity System
+ *
+ * Tripcode-style identity: secret_key → pseudonym
+ * The secret_key never leaves the client (ideally) or is only used for auth
+ * The pseudonym is derived deterministically and stored with entries
+ */
+
+import { createHash } from 'crypto';
+
+// Poetic word lists for pseudonym generation
+const ADJECTIVES = [
+  'Wandering', 'Quiet', 'Gentle', 'Swift', 'Patient',
+  'Curious', 'Dreaming', 'Distant', 'Wistful', 'Tender',
+  'Luminous', 'Hushed', 'Fleeting', 'Steady', 'Liminal',
+  'Ephemeral', 'Veiled', 'Kindred', 'Solitary', 'Resonant',
+  'Twilight', 'Amber', 'Silver', 'Mossy', 'Verdant',
+  'Coastal', 'Northern', 'Autumn', 'Midnight', 'Morning'
+];
+
+const NOUNS = [
+  'Iris', 'Ember', 'Echo', 'Sage', 'Moth',
+  'Sparrow', 'River', 'Willow', 'Fern', 'Stone',
+  'Signal', 'Candle', 'Feather', 'Anchor', 'Compass',
+  'Lantern', 'Harbor', 'Meadow', 'Tide', 'Constellation',
+  'Archive', 'Threshold', 'Vessel', 'Witness', 'Keeper',
+  'Wanderer', 'Listener', 'Scribe', 'Pilgrim', 'Chronicler'
+];
+
+/**
+ * Generate a deterministic pseudonym from a secret key.
+ * The same key always produces the same pseudonym.
+ * Includes a tripcode-style hash suffix for uniqueness.
+ */
+export function derivePseudonym(secretKey: string): string {
+  // Hash the secret key
+  const hash = createHash('sha256').update(secretKey).digest();
+
+  // Use different parts of the hash for each word selection
+  const adjIndex = hash.readUInt16BE(0) % ADJECTIVES.length;
+  const nounIndex = hash.readUInt16BE(2) % NOUNS.length;
+
+  // Add tripcode suffix for uniqueness
+  const suffix = hash.toString('hex').slice(0, 6);
+
+  return `${ADJECTIVES[adjIndex]} ${NOUNS[nounIndex]}#${suffix}`;
+}
+
+/**
+ * Generate a short hash suffix for uniqueness verification
+ * (like a tripcode, shown as pseudonym#abc123)
+ */
+export function deriveHashSuffix(secretKey: string): string {
+  const hash = createHash('sha256').update(secretKey).digest('hex');
+  return hash.slice(0, 6);
+}
+
+/**
+ * Generate a new random secret key
+ */
+export function generateSecretKey(): string {
+  const bytes = new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  return Buffer.from(bytes).toString('base64url');
+}
+
+/**
+ * Generate a session token for cookie-based web auth.
+ * Same entropy as secret_key (32 random bytes), distinct prefix to make
+ * accidental misuse easy to spot in logs.
+ */
+export function generateSessionToken(): string {
+  const bytes = new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  return 'rs_' + Buffer.from(bytes).toString('base64url');
+}
+
+/**
+ * Validate that a secret key is properly formatted
+ */
+export function isValidSecretKey(key: string): boolean {
+  // Should be a base64url string of appropriate length
+  if (typeof key !== 'string') return false;
+  if (key.length < 32 || key.length > 64) return false;
+  return /^[A-Za-z0-9_-]+$/.test(key);
+}
+
+/**
+ * Hash a secret key for storage (full SHA-256 hash)
+ * Used to look up users by their secret key without storing the key itself
+ */
+export function hashSecretKey(secretKey: string): string {
+  return createHash('sha256').update(secretKey).digest('hex');
+}
+
+/**
+ * Validate a handle format (Twitter-style)
+ * - 3-15 characters
+ * - Lowercase alphanumeric and underscores only
+ * - Must start with a letter
+ * - Rejects the deleted-user placeholder pattern (`_deleted_<6 hex>`) as
+ *   defense in depth, even though the letter-prefix rule above also rules
+ *   it out — if that rule ever loosens, this guard still blocks
+ *   impersonation of a tombstoned user.
+ */
+export function isValidHandle(handle: string): boolean {
+  if (typeof handle !== 'string') return false;
+  if (handle.length < 3 || handle.length > 15) return false;
+  if (/^_deleted_[0-9a-f]{6}$/.test(handle)) return false;
+  // Must start with letter, then letters/numbers/underscores
+  return /^[a-z][a-z0-9_]*$/.test(handle);
+}
+
+/**
+ * Normalize a handle (lowercase, strip @ if present)
+ */
+export function normalizeHandle(handle: string): string {
+  return handle.toLowerCase().replace(/^@/, '');
+}

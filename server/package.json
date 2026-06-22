@@ -1,0 +1,30 @@
+{
+  "name": "router-teamwork-server",
+  "version": "0.1.0",
+  "description": "Teleport Router - Team AI collaboration hub",
+  "type": "module",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc && cp src/schema.sql dist/schema.sql",
+    "start": "node dist/server.js",
+    "dev": "tsx src/server.ts",
+    "dev:shape": "node --env-file=.env.shape --import tsx src/server.ts",
+    "migrate": "tsx src/migrate.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@larksuiteoapi/node-sdk": "^1.62.1",
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "dotenv": "^17.2.3",
+    "firebase-admin": "^13.6.0",
+    "pg": "^8.20.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/pg": "^8.20.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0",
+    "vitest": "^4.0.16"
+  }
+}

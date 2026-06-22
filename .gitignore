@@ -1,0 +1,33 @@
+# dependencies
+node_modules/
+web/node_modules/
+server/node_modules/
+
+# build output
+server/dist/
+web/.next/
+web/out/
+cli/*.tgz
+cli/package-lock.json
+
+# env files
+.env
+.env.*
+!.env.example
+server/.env
+web/.env.local
+web/.env.production.local
+
+# data
+data.json
+*.json.bak
+
+# misc
+.DS_Store
+*.pem
+npm-debug.log*
+yarn-debug.log*
+*.tsbuildinfo
+web/next-env.d.ts
+logs/
+.claude/worktrees/

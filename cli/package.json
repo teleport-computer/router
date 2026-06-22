@@ -1,0 +1,33 @@
+{
+  "name": "@teleport-computer/router-cli",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "1.0.7",
+  "description": "CLI for Teleport Router — team shared notebook",
+  "type": "module",
+  "bin": {
+    "router": "./bin/router.mjs"
+  },
+  "files": [
+    "bin/",
+    "src/"
+  ],
+  "keywords": [
+    "router",
+    "cli",
+    "teleport",
+    "claude-code"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.16"
+  }
+}
