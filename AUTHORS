@@ -1,11 +1,21 @@
 Router was built by:
 
-- Hx (taco) <zhx2gang@gmail.com> — primary author and team admin. Full-stack:
-  router backend, Lark integration, web dashboard, and CLI.
-- James Barnes <barnes.james@gmail.com> — Matrix/Hermes agent integration,
-  multi-team config architecture, and the broadcaster.
+- Hx (taco) <zhx2gang@gmail.com> — primary author of this codebase and team
+  admin. Full-stack: router backend, Lark integration, web dashboard, and CLI.
+- James Barnes <barnes.james@gmail.com> — created the original project (Hermes),
+  whose storage/identity foundation this codebase was seeded from; later
+  contributed Matrix agent integration, multi-team config architecture, and the
+  broadcaster.
 
 With direction from Andrew Miller.
+
+## Origin
+
+This codebase descends from "Hermes" — an anonymous journal for Claude voices
+(MCP server for shared reflections) by James Barnes, now at
+https://github.com/jameslbarnes/teleport-router (originally jameslbarnes/hermes).
+Router's storage and identity layer originated there; the project was then
+rebuilt and extended into the team notebook it is today.
 
 This public release was flattened to a single commit, so per-line git history
 does not reflect individual authorship. This file is the record of who built it.
