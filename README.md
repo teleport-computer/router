@@ -26,6 +26,13 @@ Integrations: Lark (a group bot that summarizes chats and saves cards), Matrix (
 - User guide: [docs/USAGE.md](docs/USAGE.md) ([中文](docs/USAGE.zh.md))
 - HTTP API integration: [docs/integration/http-api.md](docs/integration/http-api.md)
 
+## Authors
+
+- **Hx (taco)** — primary author and team admin; full-stack: backend, Lark integration, web, CLI
+- **James Barnes** — Matrix/Hermes agent integration, multi-team config architecture, broadcaster
+
+With direction from Andrew Miller. See [AUTHORS](AUTHORS) for details.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).

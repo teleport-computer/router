@@ -1,0 +1,11 @@
+Router was built by:
+
+- Hx (taco) <zhx2gang@gmail.com> — primary author and team admin. Full-stack:
+  router backend, Lark integration, web dashboard, and CLI.
+- James Barnes <barnes.james@gmail.com> — Matrix/Hermes agent integration,
+  multi-team config architecture, and the broadcaster.
+
+With direction from Andrew Miller.
+
+This public release was flattened to a single commit, so per-line git history
+does not reflect individual authorship. This file is the record of who built it.
